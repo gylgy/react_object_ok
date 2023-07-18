@@ -1,0 +1,13 @@
+.buttonPub{
+    /* 外边距 */
+    margin: 20px;
+    /* 内边距 */
+    padding: 10px 30px;
+    
+    /* 第一种方法： */
+    /* color: antiquewhite; */
+    /* 第二种方法： */
+    color: #cacee6;
+
+
+}

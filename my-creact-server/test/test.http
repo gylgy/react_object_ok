@@ -1,0 +1,17 @@
+@url=http://localhost:3001
+@json = content-type:application/json
+
+###
+get {{url}}
+
+###
+get {{url}}/api/brands
+
+###
+post {{url}}/api/create/brand
+{{json}}
+
+{
+    "brandname": "孙悟空",
+    "brandPrice": "123456"
+}

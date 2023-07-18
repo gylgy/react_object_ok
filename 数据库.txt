@@ -1,0 +1,51 @@
+后端架构(node.js+mongodb)
+express.js+mongodb(mongoose对mongodb操作的开源工具)+cors+node.js+bcrypt.js+jsonwebtoken.js
+安装
+npm i express 
+npm i mongoose
+npm i cors
+npm i bcrypt
+npm i jsonwebtoken
+
+启动nodejs方法 这个方法很麻烦，每次改动都要重新启动一次，所以推荐使用nodemon
+
+方法1 node 文件名路径
+node src/server/app.js
+如果访问文件是index.js时，可以直接不写，文件夹结束 
+src/server/index.js
+
+方法2 使用nodemon 每次改动自动保存并自主重新启动，即为热启动。
+全局安装 npm i -g nodemon
+使用 
+nodemon src/server/app.js
+
+
+-----------------------------
+在vscode上下载REST client 
+可以创建http文件，例如：test.http 他可以代替网页来检查服务器是否正常连接，也可以查看增减改查的数据，多用于开发时。网页就不用打开了。
+
+
+
+______\\空白开始创建服务端
+第一步：创建项目文件夹（直接在文件夹里创建一个空项目）
+server_test1
+第二步：初始化（在本项目的对应地址下输入）
+npm init   或(npm init -y)：一路默认
+
+导入install :
+npm i express mongoose cors,bcrypt ,jsonwebtoken
+第三步：创建server文件夹
+server
+第四步：创建文件
+描述数据スキーマ(schema 对数据的定义)的文件
+model.js
+第五步：创建文件
+index.js
+（在本文件里写对数据的各种处理）
+
+-------------------------------------
+axios访问后端（服务器）获取数据的常见方法
+$http.get（用于获取数据）
+$http.post（用于创建数据）
+$http.put（用于更新数据）
+$http.delete（用于删除数据）

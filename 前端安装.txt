@@ -1,0 +1,132 @@
+第一部------------------------------------------------------------------------------
+使用前安装的软件
+//https://www.apicloud.com/blogDetails/8700
+React安装教程
+1.安装好node
+
+① windows下的NodeJS安装最新版本，需要登陆官网（http://nodejs.org/），便可以看到下载页面。
+② 安装时一路点击 next 
+
+2.安装react
+在命令提示符输入
+npm install -g create-react-app
+
+3.vscode安装
+https://code.visualstudio.com/
+点击下载按钮后，双击下载文件后自动安装。
+
+
+环境配置 :
+1.下载安装最新版的node.js
+2.全局安装npm install -g create-react-app
+3.下载vscode
+
+第二部--------------------------------------------------------------------------------
+
+创建项目 :npx
+0.首先进入要创建的文件夹内，(cd ..是退到上一级)
+例：
+C:\Users\d0707> d:
+D:\>cd D:\IT\react
+D:\IT\react>npx create-react-app my-react
+
+1.npx create-react-app  my-react(项目名 不可以用汉字和大写字母，下划线和横线可以)
+2.cd my-react  进入项目
+3.npm start 启动项目
+
+-------------------------------------------------------------------------------------
+npm 1.安装antDesign
+
+npm install antd --save
+npm install --save @ant-design/icons
+-----------------------------
+2.安装redux
+npm install --save redux
+-----------------------------------
+3.安装redux_thunk 支持跨域请求
+npm install --save redux-thunk
+-----------------------------------
+4.安装react-redux 
+npm install --save react-redux
+---------------------------------------
+5. 安装axios , cors, mongoose, express,bcrypt ,jsonwebtoken
+
+6. 安装bootstrap
+
+npm install --save bootstrap   不指定版本就等于下载最新版本
+指定版本安装用＠版本号
+npm install --save bootstrap@5.0.1
+
+下载插件也叫（modules）方法，例 mongoose
+
+npm i  mongoose --save
+------------------------------------
+
+下载成功后的信息
+
+added 20 packages, and audited 1506 packages in 9s
+
+236 packages are looking for funding
+  run `npm fund` for details   
+
+6 high severity vulnerabilities
+
+To address all issues (including breaking cg breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+-----------------------------------------------------
+
+
+npm i react-router-dom
+通过路由，实现页面跳转
+import { useRoutes } from "react-router-dom";
+
+
+----------------------------------------------------------------------------------------
+ 空项目（及 已起名的空文件夹）里面什么都没有，如果想执行npm命令，必须要先初始化
+npm init
+初始化之后，会产生package.json文件，是对文件的各种描述。然后可对项目进行各种展开或下载各种模块（modules）
+
+当得到一个旧项目时，如果项目里没有node-modules或node-modules版本不正确，需要手动下载modules（插件）
+命令：npm install
+下载安装的版本是按照package.json文件指定的版本下载。
+平时也可以运行npm install，就是重新安装一次插件
+
+-------------------------------------------------------------
+
+安装路由实现页面迁移，插件是 react-router-dom 
+npm install -s react-router-dom
+
+
+npm install bootstrap
+
+
+----------------------------------------------------------------------------
+
+创建服务器
+
+服务器是存储数据处理数据的项目，可以通过多种语言和框架实现，例如java，nodejs，phpjs，phthon，springboot
+例1  本项目用nodejs，mangodb数据库和express等models模块创建服务器（后端）
+
+npm i express mongoose cros
+
+---------------------------------------------
+安装axios
+
+npm install axios
+
+-----------------------------------------------
+页面间的状态管理
+
+为了实现不同页面间的状态管理，需要导入插件redux。
+所谓的状态管理就是对不同页面之间共同使用的数据的操作。
+例如，在线状态：当在线时，每个页面的用户都是在线状态（绿色明亮）。
+但是，如果在其中某个页面退出时，本页面的用户应为不在线状态。（灰色暗淡）
+那么其他页面的在线状态，也应因为不在线状态变成灰色。
+就如同，状态管理相当于项目中的全局变量，每个页面都可自由调用和修改。
+
+react如果使用redux时，需要安装以下插件：
+npm install --save redux react-redux redux-thunk 
+

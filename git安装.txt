@@ -1,0 +1,441 @@
+下载git  
+url: https://git-scm.com/
+git常用命令
+1.设置用户签名
+git  config   --global   user.email   "d08078804202@gmail.com"
+git  config   --global   user.name   "gao hong"
+2. git 初始化
+进入需要git管理的文件夹后，才能进行初始化。
+授权git初始化管理 
+命令：
+git init    
+ 文件夹内出现一个隐藏目录 .git 文件夹
+*****************************************
+提交顺序
+工作区-》暂时区-》master-》远端库github
+*****************
+把单独一个文件放在暂存区 git add
+git add 1.txt
+查看此时git的状态
+git status  绿色表示已经在暂存区了
+现在又想把1.txt从暂存区里删掉
+git rm --cached 1.txt
+再次查看此时git的状态
+git status  红色表示在工作区，没有提交到本地库(暂时区)
+提交某个文件夹下的所有文件
+git add ceshi/
+一次提交多个文件，他们并且在不同的文件夹里
+git add all 
+git add .
+*******************************************************************
+提交git commit方法
+把暂存区的内容放到历史区（master）
+git commit -m "我是第一个版本"       （-m 表示说明）    
+查看历史commit记录
+git log
+修改文件1.txt后再次提交
+git add .    git会自动检测修改的文件并提交。
+git commit -m "添加2222功能"
+******************************************************************
+注意：修改文件，增加文件的流程!!!!!!!!!!!!!!!!
+无论是修改文件或是增加文件后，都要
+首先git add . (这里的. 代表全部的文件：git会自动识别修改的文件或者增加的文件后，add上去)
+然后再git commit -m "添加了第二个功能" 
+
+**********************************************************
+进行历史回退   (硬回退)
+硬回退是从master区越过暂时区，直接回退到工作区。在记录里回退版本之前的记录都被除名（看不到了）。
+git reset --hard HEAD^
+一个尖角代表回退一个版本，
+git reset --hard HEAD^^
+两个尖角代表回退两个版本，
+也可以用波浪线代替尖角号
+两个^^ 用 ~2 代替
+git reset --hard HEAD^^
+git reset --hard HEAD~2  (注意：~前没有空格)
+指向当前版本
+git reset --hard HEAD  (HEAD后面什么都不加就是指向当前版本)
+----------------------
+查看所有的操作记录
+git reflog
+例
+fade518 (HEAD -> master) HEAD@{0}: commit: 增加了6666
+c2bdefe HEAD@{1}: commit: 2.txt增加了55555
+bf4ccd8 HEAD@{2}: commit: 1.txt增加了5555555
+a5e9ae6 HEAD@{3}: commit: 2.txt增加了44444444
+f6d942a HEAD@{4}: commit: 1.txt增加了4444444444
+a993378 HEAD@{5}: commit: 2.txt增加了33333
+3ce7005 HEAD@{6}: commit: 修改了第二次1，txt
+11db57c HEAD@{7}: commit: 修改了两个文件
+75548b5 HEAD@{8}: commit: 增加第二次功能
+dd6b0e7 HEAD@{9}: commit (initial): xinamudiyicitijiao
+
+-------------------------
+回退完成后又后悔了，需要返回刚才的版本
+git reset --hard  fade518    //fade518  是识别符7位数（相当于记录的版本号）  就是你想返回去的文件的git版本号，需要查询后才能知道。
+**************************************
+git reset --hard 回撤是硬回撤  指从历史区(master区)直接回退到工作区，工作区的代码发生了改变，然后就可以修改代码了。
+有没有软回退呢，有
+git reset --soft 
+
+软回退指从历史区(master区)直接回退到暂时区，但是工作区的代码没有改变，还是回退前的代码状态。那有什么作用呢，
+1.第一个作用   可以重新修改注释
+git reset --soft HAED^
+git add .
+git commit -m "重新修改的注释"
+
+2.第二个作用  当提交版本后发现有错误了需要修改，这时有两个办法一个是修改后再提交一次，[git add .  或 git commit ](例如 “bug修复”，但是这个方法是版本非常杂乱，用另一个方法 软回退的方法。)
+ git reset --soft HEAD^
+修改1.txt
+git add 1.txt
+git commit -m "b功能完成"
+
+**********************************
+git revert  也是版本回退
+
+git reset 是回滚到对应的commit_id，相当于是除名了commit 以后的所有的提交，并不会产生新的commit-id记录，如果要推送到远程服务器的话，需要强制推送-f。远程操作不推荐这个方法，它会覆盖掉其他的代码（也包括其他人提交的代码），很危险。
+
+git revert 是反向撤销其中的commit-id，然后重新生成一个commit-id。本身不会对其他提交commit-id产生影响，如果要推送到远程服务器的话，就是普通的操作git push就好了。
+
+                                                                    HEAD
+                                                                      |
+                                                                    main
+git reset before  ----------------------------------------------------|---------------------------->
+                          commit1      commit2                     commit3
+
+                                                               HEAD
+                                                                 |
+                                                               main
+git reset after--------------------------------------------------|---------------------------->
+                                                             commit1    
+
+                                                                    HEAD
+                                                                      |
+                                                                    main
+git revert before  ---------------------------------------------------|---------------------------->
+                          commit1      commit2                     commit3
+
+                                                    退两步 ——》                       HEAD
+                                                                                       |
+                                                                                      main
+git revert after  ---------------------------------------------------------------------|----------------->
+                          commit1      commit2    commit3                            commit4（commit4的代码其实是commit1的代码）
+记录在旧的基础上，新增加一条，但是代码和要返回的版本的代码时一致的
+
+例子 2.txt
+
+git  add .
+git status
+git commit -m "2-功能添加"
+
+
+git  revert HEAD~2 -m  “撤销注释”   //撤销版本，回到上两个版本
+
+revert 和reset  代码一样的，对工作区影响是一样的，但是记录不一样，reset  是往前面挪(记录减少了)，revert 是新生成一个记录，并把指针往后挪(记录增加了)。
+**************************************************************************************
+git 分支
+git分支就是把文件夹分成一个个独立的区域。
+在每开发一个新功能时，就创建一个分支。
+（注意：在哪个分支下创建新的分支，那么新的分支的内容就和当前分支的内容一样。例：在login分支下创建logine_new分支，那么login_new分支的内容和login分支内容一样。）
+git在初始化时，会自动生成一个分支，就做master，表示主分支，从这里可以分出来很多独立的分支，一般情况下，修改后的分支的代码都要反映到master主分支上去，以便其他人更新或下载代码。
+（在实际现场中，都会规定定时上传（push）代码到master或从master拉取（pull）新代码）
+创建分支
+新开辟一个login分支 命令
+git branch login
+git brandch 查看分支
+注意 先提交再切换
+git add .   
+git commit -m "提交"
+切换到分支login   进入到分支
+git checkout login
+git brandch 查看分支 
+-------------------------------------
+把新分支的新代码要合并到master
+先从分支切换到master 
+git checkout master
+在master下merge  合并login分支
+git merge login
+git log 查看记录 这时HAED指向master和login
+git brandch 查看分支
+
+分支被合并以后，如何删除分支 login
+git branch -d login 
+git branch 查看分支
+***************************************************************************
+分支合并冲突
+1.创建分支后创造新功能时，这时master分支代码也可能被修改，原来的代码发生了变化，如果此时把新分支的代码合并到master的时候就会发生合并冲突。
+2.当你在分支修改代码时，别的分支却先把修改后的代码合并到master上，这时的master对你来说已经和你自己的master不一样了，如果这个时候你的分支要合并到master是也会发送合并冲突。
+注意：实际上，就是记录的新旧（id.时间）发生了变化，旧版本不能到新版本合并。
+创建login分支
+git branch login
+创建新的文件 util.js.txt
+切换到master
+git checkout master
+修改文件 util.js.txt  这时文件 util.js.txt 和login分支的文件 util.js.txt 不一样了，文件内容变新了
+切换到login分支
+git checkout login 
+查看 文件 util.js.txt
+再切换到master分支
+合并login分支
+git merge login 
+这时候会发生错误，自动合并冲突。
+Administrator@WIN10-110181338 MINGW64 /f/git/hello (master|MERGING)  MERGING 合并冲突标识
+
+例子：
+
+<<<<<<< HEAD
+22222222222222222--修复
+=======
+上面表示当前文件的修改  这里指的是master分支的修改（HEAD）
+
+add from login -222
+>>>>>>> login
+
+上面>>>>>>>表示合并过来的修改  login是分支。就是你想合并的代码所在的分支。
+
+这时候不能自动合并需要你自己手动合并。
+想留下哪些就留下。不想留下的就手动删除，
+<<<<<<< HEAD
+=======
+>>>>>>> login
+这些东西也要删除掉，然后保存文件再提交。
+
+master分支 重新提交
+git add .
+git commit -m "解决合并冲突"
+
+这时master 分支的util.js.txt文件内容是最全面的。
+但是login分支的代码并没有改变。master最全面的代码没有反映到login分支。
+
+****************************团队合作***************************************************
+团队合作 GitHub远程库
+首先在github申请一个账号
+点击github主页面的右上角+号，生成一个新存储库
+填写新仓库的名称
+选择公开还是私有（学习或开源选择公开，商用代码或研发选择私有）
+其他选择略
+点击生成
+------------------------------------------------
+出现操作提示：
+create a new repository on the command line 在命令行上创建一个新的存储库
+
+echo "# gaoyuanluGithubPractice" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+
+到这里上边的代码已经做过了，略过
+从这里开始远程推送（push）----------------------
+git checkout master  进入master分支
+git remote add origin https://github.com/gylgy/gaoyuanluGithubPractice.git
+(git  远程  添加 origin )
+origin 相当于别名 可以自定义  将来用它代替后面的地址https://github.com/gylgy/gaoyuanluGithubPractice.git 以后地址就不用写了，只写origin。
+git remote -v    查看远程
+例子
+
+$ git remote -v
+origin  https://github.com/gylgy/gaoyuanluGithubPractice.git (fetch)
+origin  https://github.com/gylgy/gaoyuanluGithubPractice.git (push)
+*************************************************************************************
+!!!!!!!!!注意：当只创建了远程分支但还是没有任何推送（push）前，才能操作以下步骤进行删除分支。如果推送过，就不能使用下面的方法来删除分支。
+
+不小心写错了，而且提交了
+git 远程删除刚才提交的origin (就是 https://github.com/gylgy/gaoyuanluGithubPractice.git )
+git remote remove origin 
+git remote -v    查看远程
+重新添加远程库
+git remote add origin https://github.com/08078804202/kerwinproject.git
+git remote -v    查看远程
+
+*************************************************************************************
+把写完的代码提交到github 的master
+git push  origin master  完整的写法 git push  origin master:master
+上面表示把本地的主分支推送到远程的master
+在github主页上会跳出授权窗口，点击同意，然后出现空白网页，代表成功，关闭即可，以后不在出现。
+github上出现你提交的代码。
+例文：
+$ git push origin master
+Enumerating objects: 49, done.
+Counting objects: 100% (49/49), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (39/39), done.
+Writing objects: 100% (49/49), 4.1git 6 KiB | 473.00 KiB/s, done.
+Total 49 (delta 10), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (10/10), done.
+To https://github.com/08078804202/kerwinproject.git
+ * [new branch]      master -> master
+
+ git branch -a   查看所有分支，包括远程
+在本地分支修改代码,修改utrl.js.txt文件
+git add .
+git commit -m  "add 3333 to util.js"
+git push origin master
+如果未来一段时间一直想origin master推送代码，有简单的写法如下 先添加 -u
+git push -u origin master     -u表示记录下了origin masterb
+这以后用一下的简写代码推送
+git push
+注意：不要在远程库修改代码
+
+远程库修改了怎么办  修改远程master的1.txt
+把远程库修改的代码拉取下来(pull)
+git pull origin master           简写  git pull 
+查看本地文件（已经修改过）1.txt
+
+**************文件克隆**********************
+当新人tiechui加入时，需要他从git上面下载项目
+使用git clone  表示把git上的项目全部照搬下载下来
+打开文件夹 git bash
+
+git clone  https://github.com/gylgy/gaoyuanluGithubPractice.git   后面的地址可以在git上复制HTTPs
+----------------------------------------------------------------------
+例子：
+$ git  clone https://github.com/gylgy/gaoyuanluGithubPractice.git
+Cloning into 'gaoyuanluGithubPractice'...
+remote: Enumerating objects: 55, done.
+remote: Counting objects: 100% (55/55), done.
+remote: Compressing objects: 100% (36/36), done.
+remote: Total 55 (delta 12), reused 51 (delta 11), pack-reused 0
+Receiving objects: 100% (55/55), 5.45 KiB | 5.45 MiB/s, done.
+Resolving deltas: 100% (12/12), done.
+
+-------------------------------------------------------------------------
+tiechui先创建一个文件 tiechui.txt，添加内容后保存
+git add .
+git commit -m "tiechui 111111111111"
+git push -u origin master
+这时远程的master分支会新增tiechui.txt文件。
+----------------------------------------------------------------------------
+例子：
+$ git push -u origin master
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 278 bytes | 278.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/08078804202/kerwinproject.git
+   4a37ef6..9efe5a4  master -> master
+Branch 'master' set up to track remote branch 'master' from 'origin'.
+-----------------------------------------------------------------------------
+然后hello分支 创建kerwin.txt文件，添加内容后保存，
+git add .
+git commit -m "kerwin 1111"
+git push   这时候push就会报错，因为hello和远程master相比，没有tiechui.txt文件，相当于版本落后了。
+需要先把远程master的tiechui.txt文件pull下来后再提交，push。
+
+------hello------
+先pull  
+git pull 
+然后push
+git push
+
+--------tiechui  test----------------
+也执行pull，把hello推送的文件也拉取下来。
+git pull
+
+-----------------------------
+所以当不同的人在一起操作时，在push推送前，都要先pull拉取一次，然后在提交和推送。
+***************************************************************************************
+两个人修改同一个文件时
+kerwin 修改util.txt  添加  777   Kerwin   保存
+git add .
+git commit -m "777   Kerwin "
+
+ --------------------------------
+tiechui修改util.txt  添加  88888888 tiechui 保存 推送
+git add .
+git commit -m "88888888 tiechui "
+git push 
+------------------------------------------
+这时kerwin  才推送push
+git push  报错  因为tiechui提前推送了。
+kerwin  只好再pull一次
+git pull  但是这次同一个文件的修改，这次拉取失败，发生了合并冲突，需要手动修改util.txt文件的内容。
+git add .
+git commit -m "解决合并冲突  88888888 tiechui "
+git push
+******************团队合作 分支管理************************************
+切换到login分支
+git checkout login
+把login分支推送到远程上
+git push origin login
+
+这时远程刷新就会出现login分支
+----------------------
+例子：
+$ git push origin login
+Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
+remote:
+remote: Create a pull request for 'login' on GitHub by visiting:
+remote:      https://github.com/08078804202/kerwinproject/pull/new/login
+remote:
+To https://github.com/08078804202/kerwinproject.git
+ * [new branch]      login -> login
+---------------------------------------------------------
+tiuchui 拉取一次的login分支
+在master下输入命令
+git pull origin login
+切换到login分支
+git checkout login  这时相当于tiechui也强制地创建了login分支
+------------------------------
+例子：
+$ git checkout login
+Switched to a new branch 'login'
+Branch 'login' set up to track remote branch 'login' from 'origin'.
+---------------------------------------------------------------------
+tiuchui 在login分支修改util.txt   999 tiechui -login-修改  保存
+git add .
+git comiit -m "999 tiechui -login-修改  保存"
+tiuchui 推送到远程login分支
+git push origin login
+******************本地删除远程无用分支***********************************************
+创建一个无用分支
+git branch bugfixed
+进入到bugfixed分支
+git checkout bugfixed
+把bugfixed分支推送到远程
+git push origin bugfixed
+远程多出bugfixed分支
+bugfixed在远程分支没有用，删除
+进入到master分支
+git checkout master
+输入以下命令删除bugfixed分支
+git push origin :bugfixed
+远程已经删除bugfixed分支
+********************2023.07.15**************************
+
+在github上新建存储库后，提供的命令提示，如下：
+
+或者在命令行上创建一个新的存储库
+echo "# gaoyuanluGithubPractice" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main                （！！！！！注：main就是master）
+git remote add origin https://github.com/gylgy/gaoyuanluGithubPractice.git
+git push -u origin main
+
+或者从命令行推送现有存储库
+git remote add origin https://github.com/gylgy/gaoyuanluGithubPractice.git
+git branch -M main
+git push -u origin main
+***************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
